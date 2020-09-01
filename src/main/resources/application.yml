@@ -1,0 +1,68 @@
+server:
+  port: 8888
+  servlet:
+    context-path: /products
+
+#springdoc:
+#  packagesToScan: br.com.awm.phanterproducts
+
+
+spring:
+  application:
+    name: phanter-products
+    version: @project.version@=true
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    binder:
+      replication-factor: 1
+    reply:
+      timeout: 10000
+    topic:
+      partition-default: 6
+      request-api-request-product: request-api-request-product
+      reply-api-request-product: reply-api-request-product
+      create-product: create-product
+      create-api-request-product: create-api-request-product
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: ${spring.application.name}-consumer-group
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+    producer:
+      bootstrap-servers: localhost:9092
+      client-id: ${spring.application.name}-client-id
+
+  data:
+    mongodb:
+      authentication-database: admin
+      database: db_products
+      host: localhost
+      port: 27017
+      username: admin
+      password: senhamongo
+    main:
+      log-startup-info: true
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 15000
+        readTimeout: 15000
+
+#javers:
+#  documentDbCompatibilityEnabled: true
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    com.br.koerich.dromedary.gateway.feign: ERROR
+
+
+app:
+  request:
+    limit:
+      interval:
+        minutes: 10
